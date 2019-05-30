@@ -1,0 +1,10 @@
+<html>
+<body>
+<a href="/form">投稿画面</a><br>
+{{range .Posts}}
+  name: {{ .Name }}
+  text: {{ .Text }}
+  <br>
+{{end}}
+</body>
+</html>
