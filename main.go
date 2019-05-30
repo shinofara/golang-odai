@@ -2,14 +2,13 @@ package main
 
 import (
 	"net/http"
-	"fmt"
+	"golang-odai/handler"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-  http.HandleFunc("/", indexHandler)
+  http.HandleFunc("/", handler.IndexHandler)
+  http.HandleFunc("/form", handler.FormHandler)
+  http.HandleFunc("/create", handler.CreateHandler)
   http.ListenAndServe(":80", nil)
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "Hello Example")
 }
