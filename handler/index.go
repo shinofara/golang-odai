@@ -42,11 +42,18 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func PostDetailHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
-	posts, err := model.FindByID(r.Context(), id)
+	post, err := model.FindByID(r.Context(), id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	IndexRender(w, posts)
+
+	// テンプレートをパース
+	t := template.Must(template.ParseFiles("template/detail.html"))
+	
+	// テンプレートを描画
+	if err := t.Execute(w, post); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func FormHandler(w http.ResponseWriter, r *http.Request) {
