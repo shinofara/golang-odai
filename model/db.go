@@ -1,36 +1,37 @@
 package model
 
 import (
-	"database/sql"
 	"time"
+	"github.com/jinzhu/gorm"
 )
 
 const dsn = "root@tcp(db)/twitter"
 
 // DB database interface
 type DB struct {
-	conn *sql.DB
+	conn *gorm.DB
 }
 
 // NewDB is DB constructor.
 func New() (*DB, error) {
-	conn, err := sql.Open("mysql", dsn)
+
+	conn, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
 	db := DB{conn: conn}
 
-	conn.SetConnMaxLifetime(10 * time.Second)
-	conn.SetMaxOpenConns(10)
-	conn.SetMaxIdleConns(10)
+	conn.DB().SetConnMaxLifetime(10 * time.Second)
+	conn.DB().SetMaxOpenConns(10)
+	conn.DB().SetMaxIdleConns(10)
 
-	if err := conn.Ping(); err != nil {
+	if err := conn.DB().Ping(); err != nil {
 		return nil, err
 	}
 	return &db, nil
 }
 
 // Open returns the database connection.
-func (d *DB) Open() *sql.DB {
+func (d *DB) Open() *gorm.DB {
 	return d.conn
 }
