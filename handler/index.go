@@ -3,8 +3,9 @@ package handler
 import (
 	"net/http"
 	"golang-odai/model"
-	"html/template"
 	"github.com/go-chi/chi"
+	"github.com/unrolled/render"
+
 )
 
 type Data struct{
@@ -12,16 +13,14 @@ type Data struct{
 }
 
 func IndexRender(w http.ResponseWriter,posts []model.Post) {
-	// テンプレートをパース
-	t := template.Must(template.ParseFiles("template/index.html"))
+	re := render.New(render.Options{
+		Charset: "UTF-8",
+		Extensions: []string{".html"},
+	})
 	data := Data{
 		posts,
 	}
-
-	// テンプレートを描画
-	if err := t.Execute(w, data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	re.HTML(w, http.StatusOK, "index", data)
 }
 
 
@@ -47,22 +46,19 @@ func PostDetailHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	// テンプレートをパース
-	t := template.Must(template.ParseFiles("template/detail.html"))
-	
-	// テンプレートを描画
-	if err := t.Execute(w, post); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	re := render.New(render.Options{
+		Charset: "UTF-8",
+		Extensions: []string{".html"},
+	})
+	re.HTML(w, http.StatusOK, "detail", post)
 }
 
 func FormHandler(w http.ResponseWriter, r *http.Request) {
-	// テンプレートをパース
-	t := template.Must(template.ParseFiles("template/form.html"))
-	// テンプレートを描画
-	if err := t.Execute(w, nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	re := render.New(render.Options{
+		Charset: "UTF-8",
+		Extensions: []string{".html"},
+	})
+	re.HTML(w, http.StatusOK, "form", nil)
 }
 
 func CreateHandler(w http.ResponseWriter, r *http.Request) {

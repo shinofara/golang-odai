@@ -9,6 +9,7 @@ import (
 
 func main() {
 	r := chi.NewRouter()
+
 	r.Get("/", handler.IndexHandler)
 	r.Get("/posts/{id}", handler.PostDetailHandler)
 	r.Get("/form", handler.FormHandler)
