@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/pkg/errors"
 )
 
 type Post struct {
@@ -10,55 +11,34 @@ type Post struct {
 	Text string
 }
 
-func FindByID(ctx context.Context, id string) ([]Post, error) {
+var NotFoundRecord = errors.New("Notfound")
+
+func FindByID(_ context.Context, id string) ([]Post, error) {
 	db, err := New()
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Open().QueryContext(
-		ctx,
-		"select id, name, text from posts where id = ?",
-		id,
-	)
-	if err != nil {
-		return nil, err
+
+	posts := make([]Post, 0)
+	db.Open().Where("id = ?", id).Find(&posts)
+
+	if (len(posts) > 0) {
+		return posts, nil
 	}
 
-	list := make([]Post, 0)
-	for rows.Next() {
-		var p Post
-		if err := rows.Scan(&p.ID, &p.Name, &p.Text); err != nil {
-			return nil, err
-		}
-		list = append(list, p)
-	}
-
-	return list, nil
+	return nil, NotFoundRecord
 }
 
-func Select(ctx context.Context) ([]Post, error) {
+func Select(_ context.Context) ([]Post, error) {
 	db, err := New()
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Open().QueryContext(
-		ctx,
-		"select id, name, text from posts",
-	)
-	if err != nil {
-		return nil, err
-	}
 
-	list := make([]Post, 0)
-	for rows.Next() {
-		var p Post
-		if err := rows.Scan(&p.ID, &p.Name, &p.Text); err != nil {
-			return nil, err
-		}
-		list = append(list, p)
-	}
+	posts := make([]Post, 0)
+	db.Open().Find(&posts)
 
-	return list, nil
+	return posts, nil
 }
 
 func Insert(ctx context.Context, post Post) error {
@@ -66,14 +46,7 @@ func Insert(ctx context.Context, post Post) error {
 	if err != nil {
 		return err
 	}
-	if _, err := db.Open().ExecContext(
-		ctx,
-		"insert into posts (name, text) values (?,?)",
-		post.Name,
-		post.Text,
-	); err != nil {
-		return err
-	}
+	db.Open().Create(&post)
 
 	return nil
 }

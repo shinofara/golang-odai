@@ -28,6 +28,12 @@ func IndexRender(w http.ResponseWriter,posts []model.Post) {
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	posts, err := model.Select(r.Context())
 	if err != nil {
+		/*
+		if err == model.Notfound {
+			not found
+		}
+		*/
+
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	IndexRender(w, posts)
