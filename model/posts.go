@@ -10,6 +10,32 @@ type Post struct {
 	Text string
 }
 
+func FindByID(ctx context.Context, id string) ([]Post, error) {
+	db, err := New()
+	if err != nil {
+		return nil, err
+	}
+	rows, err := db.Open().QueryContext(
+		ctx,
+		"select id, name, text from posts where id = ?",
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]Post, 0)
+	for rows.Next() {
+		var p Post
+		if err := rows.Scan(&p.ID, &p.Name, &p.Text); err != nil {
+			return nil, err
+		}
+		list = append(list, p)
+	}
+
+	return list, nil
+}
+
 func Select(ctx context.Context) ([]Post, error) {
 	db, err := New()
 	if err != nil {

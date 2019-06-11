@@ -4,20 +4,17 @@ import (
 	"net/http"
 	"golang-odai/model"
 	"html/template"
+	"github.com/go-chi/chi"
 )
 
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	posts, err := model.Select(r.Context())
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+type Data struct{
+	Posts []model.Post
+}
 
+func IndexRender(w http.ResponseWriter,posts []model.Post) {
 	// テンプレートをパース
 	t := template.Must(template.ParseFiles("template/index.html"))
-
-	data := struct{
-		Posts []model.Post
-	}{
+	data := Data{
 		posts,
 	}
 
@@ -25,6 +22,25 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err := t.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	posts, err := model.Select(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	IndexRender(w, posts)
+}
+
+func PostDetailHandler(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	posts, err := model.FindByID(r.Context(), id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	IndexRender(w, posts)
 }
 
 func FormHandler(w http.ResponseWriter, r *http.Request) {

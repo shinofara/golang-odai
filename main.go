@@ -4,11 +4,14 @@ import (
 	"net/http"
 	"golang-odai/handler"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-chi/chi"
 )
 
 func main() {
-  http.HandleFunc("/", handler.IndexHandler)
-  http.HandleFunc("/form", handler.FormHandler)
-  http.HandleFunc("/create", handler.CreateHandler)
-  http.ListenAndServe(":80", nil)
+	r := chi.NewRouter()
+	r.Get("/", handler.IndexHandler)
+	r.Get("/posts/{id}", handler.PostDetailHandler)
+	r.Get("/form", handler.FormHandler)
+	r.Post("/create", handler.CreateHandler)
+	http.ListenAndServe(":80", r)
 }
