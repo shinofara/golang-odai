@@ -8,5 +8,6 @@ require (
 	github.com/jinzhu/gorm v1.9.8
 	github.com/pkg/errors v0.8.1
 	github.com/unrolled/render v1.0.0
+	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
 	google.golang.org/appengine v1.6.0 // indirect
 )

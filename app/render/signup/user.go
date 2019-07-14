@@ -1,4 +1,4 @@
-package user
+package signup
 
 import (
 	"github.com/unrolled/render"
@@ -15,7 +15,7 @@ type Data struct{
 	Posts []repository.Post
 }
 
-const TEMPLATE_DIR = "user"
+const TEMPLATE_DIR = "signup"
 
 func New(re *render.Render) *Render {
 	return &Render{
@@ -23,6 +23,6 @@ func New(re *render.Render) *Render {
 	}
 }
 
-func (r *Render) Index(w http.ResponseWriter, data Data) error {
-	return r.re.HTML(w, http.StatusOK, path.Join(TEMPLATE_DIR, "post"), data)
+func (r *Render) Form(w http.ResponseWriter) error {
+	return r.re.HTML(w, http.StatusOK, path.Join(TEMPLATE_DIR, "form"), nil)
 }

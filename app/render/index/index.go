@@ -15,7 +15,7 @@ type Data struct{
 	Posts []post.Post
 }
 
-const TEMPLATE_DIR = "post"
+const TEMPLATE_DIR = "index"
 
 func New(re *render.Render) *Render {
 	return &Render{
