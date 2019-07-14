@@ -8,11 +8,17 @@ $ cd /path/to/your/gopath/src/golang-odai
 ```
 
 ```
-docker-compose up -d
+$ docker-compose up -d
+```
+
+## DBのマイグレーション実行
+
+```
+$ docker-compose up init
 ```
 
 ## MySQL
 
 ```
-mysql -u root -h 127.0.0.1 -P 43306
+$ mysql -u root -h 127.0.0.1 -P 43306
 ```
