@@ -1,20 +1,20 @@
 package post
 
 import (
-	"golang-odai/model"
+	"golang-odai/domain/post"
 	"net/http"
 )
 
-func (post *Post) Create(w http.ResponseWriter, r *http.Request) {
+func (hp *Post) Create(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	text := r.FormValue("text")
 
-	p := model.Post{
+	p := &post.Post{
 		Name: name,
 		Text: text,
 	}
 
-	if err := model.Insert(r.Context(), p); err != nil {
+	if err := hp.repoPost.Create(r.Context(), p); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 

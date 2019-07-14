@@ -1,4 +1,4 @@
-package model
+package post
 
 import (
 	"time"
@@ -13,7 +13,7 @@ type DB struct {
 }
 
 // NewDB is DB constructor.
-func New() (*DB, error) {
+func NewDB() (*DB, error) {
 
 	conn, err := gorm.Open("mysql", dsn)
 	if err != nil {

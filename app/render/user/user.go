@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/unrolled/render"
-	"golang-odai/model"
+	"golang-odai/domain/post/repository"
 	"net/http"
 	"path"
 )
@@ -12,7 +12,7 @@ type Render struct{
 }
 
 type Data struct{
-	Posts []model.Post
+	Posts []repository.Post
 }
 
 const TEMPLATE_DIR = "user"

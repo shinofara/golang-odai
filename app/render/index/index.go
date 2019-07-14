@@ -2,7 +2,7 @@ package index
 
 import (
 	"github.com/unrolled/render"
-	"golang-odai/model"
+	"golang-odai/domain/post"
 	"net/http"
 	"path"
 )
@@ -12,7 +12,7 @@ type Render struct{
 }
 
 type Data struct{
-	Posts []model.Post
+	Posts []post.Post
 }
 
 const TEMPLATE_DIR = "post"
