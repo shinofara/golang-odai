@@ -5,23 +5,21 @@ import (
 	"github.com/jinzhu/gorm"
 	"golang-odai/domain/post/repository"
 	"golang-odai/domain/user"
+	"golang-odai/infrastructure/repository/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserImpl struct {}
+type UserImpl struct {
+	db *mysql.DB
+}
 
-func New() *UserImpl {
-	return &UserImpl{}
+func New(db *mysql.DB) *UserImpl {
+	return &UserImpl{db: db}
 }
 
 func (i *UserImpl) FindByEmailAndPassword(_ context.Context, email, password string) (*user.User, error) {
-	db, err := NewDB()
-	if err != nil {
-		return nil, err
-	}
-
 	u := &user.User{}
-	if err := db.Open().Where("email = ?", email).First(&u).Error; err != nil {
+	if err := i.db.Open().Where("email = ?", email).First(&u).Error; err != nil {
 		if (gorm.IsRecordNotFoundError(err)) {
 			return nil, repository.NotFoundRecord
 		}
@@ -38,11 +36,6 @@ func (i *UserImpl) FindByEmailAndPassword(_ context.Context, email, password str
 }
 
 func (i *UserImpl) Create(ctx context.Context, u *user.User) error {
-	db, err := NewDB()
-	if err != nil {
-		return err
-	}
-
 	// パスワードを不可逆なハッシュ化
 	hashPW, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -50,7 +43,7 @@ func (i *UserImpl) Create(ctx context.Context, u *user.User) error {
 	}
 	u.Password = string(hashPW)
 
-	db.Open().Create(&u)
+	i.db.Open().Create(&u)
 
 	return nil
 }

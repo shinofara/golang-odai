@@ -7,6 +7,7 @@ import (
 	"golang-odai/app/handler/post"
 	"golang-odai/app/handler/signup"
 	"golang-odai/app/handler/signin"
+	"golang-odai/infrastructure/repository/mysql"
 	infraPost "golang-odai/infrastructure/repository/mysql/post"
 	infraUser "golang-odai/infrastructure/repository/mysql/user"
 	"golang-odai/app/render"
@@ -15,8 +16,6 @@ import (
 
 func main() {
 	r := chi.NewRouter()
-
-
 	setHanlders(r);
 
 	http.ListenAndServe(":80", r)
@@ -27,8 +26,13 @@ func setHanlders(r *chi.Mux) {
 		IsDevelopment: true,
 	})
 
-	repoPost := infraPost.New()
-	repoUser := infraUser.New()
+	db, err := mysql.NewDB()
+	if err != nil {
+		panic(err)
+	}
+
+	repoPost := infraPost.New(db)
+	repoUser := infraUser.New(db)
 
 	r.Route("/", func(r chi.Router) {
 		h := index.New(re, repoPost)
