@@ -6,11 +6,15 @@ import (
 )
 
 func (hp *Post) Create(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
 	text := r.FormValue("text")
 
+	u, err := hp.sess.GetUser(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 	p := &post.Post{
-		Name: name,
+		UserID: u.ID,
 		Text: text,
 	}
 

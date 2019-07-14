@@ -2,7 +2,7 @@ package signup
 
 import (
 	"github.com/unrolled/render"
-	"golang-odai/app/render/signup"
+	"golang-odai/app/http/render/signup"
 	"golang-odai/domain/user/repository"
 )
 

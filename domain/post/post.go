@@ -1,7 +1,11 @@
 package post
 
+import "golang-odai/domain/user"
+
 type Post struct {
 	ID uint32
-	Name string
+	UserID uint32
 	Text string
+
+	User *user.User
 }

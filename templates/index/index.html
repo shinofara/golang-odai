@@ -6,7 +6,7 @@
 
 {{range .Posts}}
   <a href="/posts/{{ .ID }}">
-  name: {{ .Name }}
+  name: {{ .User.Name }}
   text: {{ .Text }}
   </a>
   <br>

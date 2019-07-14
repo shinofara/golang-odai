@@ -3,6 +3,7 @@ package post
 import (
 	"github.com/unrolled/render"
 	"golang-odai/domain/post"
+	"golang-odai/domain/user"
 	"net/http"
 	"path"
 )
@@ -17,6 +18,10 @@ type IndexData struct{
 
 type DetailData struct{
 	Post *post.Post
+}
+
+type FormData struct{
+	User *user.User
 }
 
 const TEMPLATE_DIR = "post"
@@ -35,6 +40,6 @@ func (r *Render) Detail(w http.ResponseWriter, data DetailData) error {
 	return r.re.HTML(w, http.StatusOK, path.Join(TEMPLATE_DIR, "detail"), data)
 }
 
-func (r *Render) Form(w http.ResponseWriter) error {
-	return r.re.HTML(w, http.StatusOK, path.Join(TEMPLATE_DIR, "form"), nil)
+func (r *Render) Form(w http.ResponseWriter, data FormData) error {
+	return r.re.HTML(w, http.StatusOK, path.Join(TEMPLATE_DIR, "form"), data)
 }

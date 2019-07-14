@@ -1,7 +1,7 @@
 package post
 
 import (
-	rePost "golang-odai/app/render/post"
+	rePost "golang-odai/app/http/render/post"
 	"golang-odai/domain/post"
 	"net/http"
 )

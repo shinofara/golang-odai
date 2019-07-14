@@ -2,7 +2,7 @@ package index
 
 import (
 	"github.com/unrolled/render"
-	"golang-odai/app/render/index"
+	"golang-odai/app/http/render/index"
 	"golang-odai/domain/post/repository"
 	"net/http"
 )
@@ -14,7 +14,7 @@ type Index struct {
 
 func New(re *render.Render, p repository.Post) *Index {
 	return &Index{
-		re: index.New(re),
+		re:       index.New(re),
 		repoPost: p,
 	}
 }

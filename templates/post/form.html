@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="/posts/create" method="post">
-    name: <input type="text" name="name"><br>
+    name: {{ .User.Name }}<br>
     text: <input type="text" name="text"><br>
     <button type="submit">送信</button>
 </form>

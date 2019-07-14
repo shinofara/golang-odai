@@ -35,6 +35,18 @@ func (i *UserImpl) FindByEmailAndPassword(_ context.Context, email, password str
 	return u, nil
 }
 
+func (i *UserImpl) FindByIDs(_ context.Context, id ...uint32) ([]user.User, error) {
+	us := []user.User{}
+	if err := i.db.Open().Where("id IN (?)", id).Find(&us).Error; err != nil {
+		if (gorm.IsRecordNotFoundError(err)) {
+			return nil, repository.NotFoundRecord
+		}
+		return nil, err
+	}
+
+	return us, nil
+}
+
 func (i *UserImpl) Create(ctx context.Context, u *user.User) error {
 	// パスワードを不可逆なハッシュ化
 	hashPW, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)

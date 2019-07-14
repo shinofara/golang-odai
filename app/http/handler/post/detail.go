@@ -2,7 +2,7 @@ package post
 
 import (
 	"github.com/go-chi/chi"
-	rePost "golang-odai/app/render/post"
+	rePost "golang-odai/app/http/render/post"
 	"net/http"
 )
 
