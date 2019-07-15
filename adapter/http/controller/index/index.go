@@ -1,23 +1,24 @@
 package index
 
 import (
-	"github.com/unrolled/render"
 	index2 "golang-odai/adapter/http/render/index"
 	"golang-odai/usecase/interactor/timeline"
 	"golang-odai/usecase/repository"
 	"net/http"
+
+	"github.com/unrolled/render"
 )
 
 type Index struct {
-	re       *index2.Render
-	repoPost repository.Post
+	re          *index2.Render
+	repoPost    repository.Post
 	useTimeline timeline.TimeLine
 }
 
 func New(re *render.Render, p repository.Post, usecase timeline.TimeLine) *Index {
 	return &Index{
-		re:       index2.New(re),
-		repoPost: p,
+		re:          index2.New(re),
+		repoPost:    p,
 		useTimeline: usecase,
 	}
 }

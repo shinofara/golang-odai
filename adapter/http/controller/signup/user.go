@@ -1,9 +1,10 @@
 package signup
 
 import (
-	"github.com/unrolled/render"
 	signup2 "golang-odai/adapter/http/render/signup"
 	"golang-odai/usecase/repository"
+
+	"github.com/unrolled/render"
 )
 
 type User struct {

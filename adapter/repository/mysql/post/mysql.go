@@ -5,6 +5,7 @@ import (
 	"golang-odai/domain"
 	"golang-odai/external/mysql"
 	"golang-odai/usecase/repository"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,7 +16,7 @@ type PostImpl struct {
 
 func New(db *mysql.DB, repoUser repository.User) *PostImpl {
 	return &PostImpl{
-		db: db,
+		db:       db,
 		repoUser: repoUser,
 	}
 }
@@ -23,7 +24,7 @@ func New(db *mysql.DB, repoUser repository.User) *PostImpl {
 func (i *PostImpl) FindByID(ctx context.Context, id uint32) (*domain.Post, error) {
 	var post domain.Post
 	if err := i.db.Open().Where("id = ?", id).First(&post).Error; err != nil {
-		if (gorm.IsRecordNotFoundError(err)) {
+		if gorm.IsRecordNotFoundError(err) {
 			return nil, repository.NotFoundRecord
 		}
 		return nil, err

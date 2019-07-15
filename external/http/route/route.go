@@ -1,7 +1,6 @@
 package route
 
 import (
-	"github.com/go-chi/chi"
 	"golang-odai/adapter/http/controller/index"
 	"golang-odai/adapter/http/controller/post"
 	"golang-odai/adapter/http/controller/signin"
@@ -13,8 +12,10 @@ import (
 	infraUser "golang-odai/adapter/repository/mysql/user"
 	"golang-odai/config"
 	"golang-odai/external/mysql"
-	"golang-odai/usecase/interactor/timeline"
 	usePost "golang-odai/usecase/interactor/post"
+	"golang-odai/usecase/interactor/timeline"
+
+	"github.com/go-chi/chi"
 )
 
 func New(cfg *config.Config) (*chi.Mux, error) {
@@ -35,9 +36,7 @@ func New(cfg *config.Config) (*chi.Mux, error) {
 
 	useTimeline := timeline.New(repoPost, repoUser)
 
-
 	up := usePost.New(repoPost, repoUser)
-
 
 	r.Route("/", func(r chi.Router) {
 		h := index.New(re, repoPost, useTimeline)

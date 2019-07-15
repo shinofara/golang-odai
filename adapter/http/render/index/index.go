@@ -1,17 +1,18 @@
 package index
 
 import (
-	"github.com/unrolled/render"
 	"golang-odai/domain"
 	"net/http"
 	"path"
+
+	"github.com/unrolled/render"
 )
 
-type Render struct{
+type Render struct {
 	re *render.Render
 }
 
-type Data struct{
+type Data struct {
 	Posts []domain.Post
 }
 

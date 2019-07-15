@@ -1,17 +1,18 @@
 package signup
 
 import (
-	"github.com/unrolled/render"
 	"golang-odai/usecase/repository"
 	"net/http"
 	"path"
+
+	"github.com/unrolled/render"
 )
 
-type Render struct{
+type Render struct {
 	re *render.Render
 }
 
-type Data struct{
+type Data struct {
 	Posts []repository.Post
 }
 

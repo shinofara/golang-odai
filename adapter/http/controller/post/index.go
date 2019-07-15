@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-type Data struct{
+type Data struct {
 	Posts []domain.Post
 }
 

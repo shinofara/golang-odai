@@ -1,12 +1,13 @@
 package signin
 
 import (
-	"github.com/unrolled/render"
 	"net/http"
 	"path"
+
+	"github.com/unrolled/render"
 )
 
-type Render struct{
+type Render struct {
 	re *render.Render
 }
 

@@ -10,4 +10,3 @@ type Post interface {
 	FindAll(ctx context.Context) ([]domain.Post, error)
 	Create(ctx context.Context, post *domain.Post) error
 }
-

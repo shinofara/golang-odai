@@ -1,25 +1,26 @@
 package post
 
 import (
-	"github.com/unrolled/render"
 	"golang-odai/domain"
 	"net/http"
 	"path"
+
+	"github.com/unrolled/render"
 )
 
-type Render struct{
+type Render struct {
 	re *render.Render
 }
 
-type IndexData struct{
+type IndexData struct {
 	Posts []domain.Post
 }
 
-type DetailData struct{
+type DetailData struct {
 	Post *domain.Post
 }
 
-type FormData struct{
+type FormData struct {
 	User *domain.User
 }
 

@@ -2,10 +2,11 @@ package user
 
 import (
 	"context"
-	"github.com/jinzhu/gorm"
 	"golang-odai/domain"
 	"golang-odai/external/mysql"
 	"golang-odai/usecase/repository"
+
+	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +21,7 @@ func New(db *mysql.DB) *UserImpl {
 func (i *UserImpl) FindByEmailAndPassword(_ context.Context, email, password string) (*domain.User, error) {
 	u := &domain.User{}
 	if err := i.db.Open().Where("email = ?", email).First(&u).Error; err != nil {
-		if (gorm.IsRecordNotFoundError(err)) {
+		if gorm.IsRecordNotFoundError(err) {
 			return nil, repository.NotFoundRecord
 		}
 		return nil, err
@@ -38,7 +39,7 @@ func (i *UserImpl) FindByEmailAndPassword(_ context.Context, email, password str
 func (i *UserImpl) FindByIDs(_ context.Context, id ...uint32) ([]domain.User, error) {
 	us := []domain.User{}
 	if err := i.db.Open().Where("id IN (?)", id).Find(&us).Error; err != nil {
-		if (gorm.IsRecordNotFoundError(err)) {
+		if gorm.IsRecordNotFoundError(err) {
 			return nil, repository.NotFoundRecord
 		}
 		return nil, err
@@ -50,7 +51,7 @@ func (i *UserImpl) FindByIDs(_ context.Context, id ...uint32) ([]domain.User, er
 func (i *UserImpl) FindByID(_ context.Context, id uint32) (*domain.User, error) {
 	u := domain.User{}
 	if err := i.db.Open().Where("id = ?", id).First(&u).Error; err != nil {
-		if (gorm.IsRecordNotFoundError(err)) {
+		if gorm.IsRecordNotFoundError(err) {
 			return nil, repository.NotFoundRecord
 		}
 		return nil, err

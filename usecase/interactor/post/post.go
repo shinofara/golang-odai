@@ -6,15 +6,18 @@ import (
 	"golang-odai/usecase/repository"
 )
 
+// Post defines the interface for post processing.
 type Post interface {
 	Get(ctx context.Context, id uint32) (*domain.Post, error)
 }
 
+// post implements processing based on Interface.
 type post struct {
 	repoPost repository.Post
 	repoUser repository.User
 }
 
+// New returns new post
 func New(repoPost repository.Post, repoUser repository.User) *post {
 	return &post{
 		repoPost: repoPost,

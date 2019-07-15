@@ -1,9 +1,9 @@
 package config
 
 type Config struct {
-	Domain string
+	Domain  string
 	Session *Session
-	Render *Render
+	Render  *Render
 }
 
 type Session struct {

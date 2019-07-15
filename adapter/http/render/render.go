@@ -19,8 +19,8 @@ func New(cfg *Config) *render.Render {
 	}
 
 	return render.New(render.Options{
-			Charset:    "UTF-8",
-			Extensions: []string{".html"},
-			IsDevelopment: c.IsDevelopment,
-		})
+		Charset:       "UTF-8",
+		Extensions:    []string{".html"},
+		IsDevelopment: c.IsDevelopment,
+	})
 }

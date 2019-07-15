@@ -1,9 +1,9 @@
 package domain
 
 type Post struct {
-	ID uint32
+	ID     uint32
 	UserID uint32
-	Text string
+	Text   string
 
 	User *User
 }

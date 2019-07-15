@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"time"
+
 	"github.com/jinzhu/gorm"
 )
 

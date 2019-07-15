@@ -2,10 +2,11 @@ package session
 
 import (
 	"encoding/gob"
-	"github.com/gorilla/sessions"
-	"github.com/pkg/errors"
 	"golang-odai/domain"
 	"net/http"
+
+	"github.com/gorilla/sessions"
+	"github.com/pkg/errors"
 )
 
 const SESSION_NAME = "login_session"
@@ -25,11 +26,11 @@ func New(domain, secret string) *Session {
 	store := sessions.NewCookieStore([]byte(secret))
 
 	store.Options = &sessions.Options{
-		Domain:     domain,
-		Path:       "/",
-		MaxAge:     3600,
-		Secure:     false,
-		HttpOnly:   true,
+		Domain:   domain,
+		Path:     "/",
+		MaxAge:   3600,
+		Secure:   false,
+		HttpOnly: true,
 	}
 
 	return &Session{

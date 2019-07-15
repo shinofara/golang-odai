@@ -1,10 +1,11 @@
 package post
 
 import (
-	"github.com/go-chi/chi"
 	post2 "golang-odai/adapter/http/render/post"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
 )
 
 func (p *Post) Detail(w http.ResponseWriter, r *http.Request) {

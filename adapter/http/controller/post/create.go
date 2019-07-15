@@ -15,7 +15,7 @@ func (hp *Post) Create(w http.ResponseWriter, r *http.Request) {
 
 	p := &domain.Post{
 		UserID: u.ID,
-		Text: text,
+		Text:   text,
 	}
 
 	if err := hp.repoPost.Create(r.Context(), p); err != nil {

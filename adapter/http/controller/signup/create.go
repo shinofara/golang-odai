@@ -11,8 +11,8 @@ func (hu *User) Create(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	u := &domain.User{
-		Name: name,
-		Email: email,
+		Name:     name,
+		Email:    email,
 		Password: password,
 	}
 

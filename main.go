@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	_ "github.com/go-sql-driver/mysql"
 	"golang-odai/config"
 	"golang-odai/external/http/route"
 	"log"
@@ -11,6 +10,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -23,7 +24,6 @@ func main() {
 			IsDevelopment: true,
 		},
 	}
-
 
 	r, err := route.New(cfg)
 	if err != nil {
