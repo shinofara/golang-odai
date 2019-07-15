@@ -4,12 +4,17 @@ import (
 	"github.com/go-chi/chi"
 	post2 "golang-odai/adapter/http/render/post"
 	"net/http"
+	"strconv"
 )
 
 func (p *Post) Detail(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
+	uid, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
 
-	post, err := p.repoPost.FindByID(r.Context(), id)
+	post, err := p.usePost.Get(r.Context(), uint32(uid))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

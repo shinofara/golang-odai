@@ -19,12 +19,13 @@ func init() {
 }
 
 // New returns new Session
-func New(secret string) *Session {
+func New(domain, secret string) *Session {
 	//本来はハードコーディングせずに外部から渡すこと
+	//Production,Developmentといった動作環境に応じて値を変更する事
 	store := sessions.NewCookieStore([]byte(secret))
 
 	store.Options = &sessions.Options{
-		Domain:     "localhost",
+		Domain:     domain,
 		Path:       "/",
 		MaxAge:     3600,
 		Secure:     false,
