@@ -3,7 +3,7 @@ package index
 import (
 	"github.com/unrolled/render"
 	index2 "golang-odai/adapter/http/render/index"
-	"golang-odai/adapter/usecase/repository"
+	"golang-odai/usecase/repository"
 	"net/http"
 )
 

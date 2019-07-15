@@ -2,9 +2,9 @@ package post
 
 import (
 	"context"
-	"golang-odai/adapter/usecase/repository"
 	"golang-odai/domain"
 	"golang-odai/external/mysql"
+	"golang-odai/usecase/repository"
 	"log"
 
 	//"fmt"

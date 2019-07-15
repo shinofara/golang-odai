@@ -2,7 +2,7 @@ package signup
 
 import (
 	"github.com/unrolled/render"
-	"golang-odai/adapter/usecase/repository"
+	"golang-odai/usecase/repository"
 	"net/http"
 	"path"
 )

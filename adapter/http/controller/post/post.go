@@ -4,7 +4,7 @@ import (
 	"github.com/unrolled/render"
 	post2 "golang-odai/adapter/http/render/post"
 	"golang-odai/adapter/http/session"
-	"golang-odai/adapter/usecase/repository"
+	"golang-odai/usecase/repository"
 )
 
 type Post struct {

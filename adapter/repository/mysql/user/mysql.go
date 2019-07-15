@@ -3,9 +3,9 @@ package user
 import (
 	"context"
 	"github.com/jinzhu/gorm"
-	"golang-odai/adapter/usecase/repository"
 	"golang-odai/domain"
 	"golang-odai/external/mysql"
+	"golang-odai/usecase/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 

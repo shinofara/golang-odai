@@ -4,7 +4,7 @@ import (
 	"github.com/unrolled/render"
 	signin2 "golang-odai/adapter/http/render/signin"
 	"golang-odai/adapter/http/session"
-	"golang-odai/adapter/usecase/repository"
+	"golang-odai/usecase/repository"
 	"net/http"
 )
 

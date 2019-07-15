@@ -3,7 +3,7 @@ package signup
 import (
 	"github.com/unrolled/render"
 	signup2 "golang-odai/adapter/http/render/signup"
-	"golang-odai/adapter/usecase/repository"
+	"golang-odai/usecase/repository"
 )
 
 type User struct {
