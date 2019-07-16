@@ -18,7 +18,7 @@ type post struct {
 }
 
 // New returns new post
-func New(repoPost repository.Post, repoUser repository.User) *post {
+func New(repoPost repository.Post, repoUser repository.User) Post {
 	return &post{
 		repoPost: repoPost,
 		repoUser: repoUser,

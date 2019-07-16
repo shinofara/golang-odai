@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (hu *User) Create(w http.ResponseWriter, r *http.Request) {
+func (s *Signup) Create(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
@@ -16,7 +16,7 @@ func (hu *User) Create(w http.ResponseWriter, r *http.Request) {
 		Password: password,
 	}
 
-	if err := hu.repoUser.Create(r.Context(), u); err != nil {
+	if err := s.repoUser.Create(r.Context(), u); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 

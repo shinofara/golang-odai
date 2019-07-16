@@ -15,18 +15,23 @@ type Session struct {
 	store *sessions.CookieStore
 }
 
+type Config struct {
+	Domain string
+	Secret string
+}
+
 func init() {
 	gob.Register(&domain.User{})
 }
 
 // New returns new Session
-func New(domain, secret string) *Session {
+func New(cfg *Config) *Session {
 	//本来はハードコーディングせずに外部から渡すこと
 	//Production,Developmentといった動作環境に応じて値を変更する事
-	store := sessions.NewCookieStore([]byte(secret))
+	store := sessions.NewCookieStore([]byte(cfg.Secret))
 
 	store.Options = &sessions.Options{
-		Domain:   domain,
+		Domain:   cfg.Domain,
 		Path:     "/",
 		MaxAge:   3600,
 		Secure:   false,

@@ -7,13 +7,13 @@ import (
 	"github.com/unrolled/render"
 )
 
-type User struct {
+type Signup struct {
 	re       *signup2.Render
 	repoUser repository.User
 }
 
-func New(re *render.Render, p repository.User) *User {
-	return &User{
+func New(re *render.Render, p repository.User) *Signup {
+	return &Signup{
 		re:       signup2.New(re),
 		repoUser: p,
 	}

@@ -14,7 +14,7 @@ type UserImpl struct {
 	db *mysql.DB
 }
 
-func New(db *mysql.DB) *UserImpl {
+func New(db *mysql.DB) repository.User {
 	return &UserImpl{db: db}
 }
 

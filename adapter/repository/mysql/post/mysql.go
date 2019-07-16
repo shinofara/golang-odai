@@ -14,7 +14,7 @@ type PostImpl struct {
 	repoUser repository.User
 }
 
-func New(db *mysql.DB, repoUser repository.User) *PostImpl {
+func New(db *mysql.DB, repoUser repository.User) repository.Post {
 	return &PostImpl{
 		db:       db,
 		repoUser: repoUser,
