@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"golang-odai/adapter/http/render"
+	"golang-odai/adapter/http/session"
 	"golang-odai/config"
 	"golang-odai/external/http/route"
 	"log"
@@ -17,10 +19,11 @@ import (
 func main() {
 	cfg := &config.Config{
 		Domain: "localhost",
-		Session: &config.Session{
+		Session: &session.Config{
+			Domain: "localhost",
 			Secret: "xxxxx",
 		},
-		Render: &config.Render{
+		Render: &render.Config{
 			IsDevelopment: true,
 		},
 	}

@@ -1,15 +1,12 @@
 package config
 
+import (
+	"golang-odai/adapter/http/render"
+	"golang-odai/adapter/http/session"
+)
+
 type Config struct {
 	Domain  string
-	Session *Session
-	Render  *Render
-}
-
-type Session struct {
-	Secret string
-}
-
-type Render struct {
-	IsDevelopment bool
+	Session *session.Config
+	Render  *render.Config
 }

@@ -15,7 +15,7 @@ type timeLine struct {
 	repoUser repository.User
 }
 
-func New(repoPost repository.Post, repoUser repository.User) *timeLine {
+func New(repoPost repository.Post, repoUser repository.User) TimeLine {
 	return &timeLine{
 		repoPost: repoPost,
 		repoUser: repoUser,

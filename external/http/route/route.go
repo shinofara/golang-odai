@@ -1,6 +1,7 @@
 package route
 
 import (
+	"github.com/google/wire"
 	"golang-odai/adapter/http/controller/index"
 	"golang-odai/adapter/http/controller/post"
 	"golang-odai/adapter/http/controller/signin"
@@ -18,35 +19,42 @@ import (
 	"github.com/go-chi/chi"
 )
 
+var SuperSet = wire.NewSet(
+	infraUser.New,
+	infraPost.New,
+	timeline.New,
+	usePost.New,
+	session.New,
+	render.New,
+	)
+
+var ControllerSet = wire.NewSet(
+	index.New,
+	post.New,
+	signup.New,
+	signin.New,
+	)
+
+var MiddlewareSet = wire.NewSet(
+	middleware.AuthenticationMiddleware,
+	)
+
 func New(cfg *config.Config) (*chi.Mux, error) {
 	r := chi.NewRouter()
-	re := render.New(&render.Config{
-		IsDevelopment: cfg.Render.IsDevelopment,
-	})
-
 	db, err := mysql.NewDB()
 	if err != nil {
 		return nil, err
 	}
 
-	sess := session.New(cfg.Domain, cfg.Session.Secret)
-
-	repoUser := infraUser.New(db)
-	repoPost := infraPost.New(db, repoUser)
-
-	useTimeline := timeline.New(repoPost, repoUser)
-
-	up := usePost.New(repoPost, repoUser)
-
 	r.Route("/", func(r chi.Router) {
-		h := index.New(re, repoPost, useTimeline)
+		h := BuildIndexController(db, cfg.Render, cfg.Session)
 		r.Get("/", h.Index)
 	})
 
 	r.Route("/posts", func(r chi.Router) {
-		r.Use(middleware.AuthenticationMiddleware(sess))
+		r.Use(BuildAuthenticationMiddleware(cfg.Session))
 
-		h := post.New(sess, re, repoPost, up)
+		h := BuildPostController(db, cfg.Render, cfg.Session)
 		r.Get("/", h.Index)
 		r.Get("/{id}", h.Detail)
 		r.Get("/form", h.Form)
@@ -54,13 +62,13 @@ func New(cfg *config.Config) (*chi.Mux, error) {
 	})
 
 	r.Route("/signup", func(r chi.Router) {
-		h := signup.New(re, repoUser)
+		h := BuildSignupController(db, cfg.Render, cfg.Session)
 		r.Get("/", h.Form)
 		r.Post("/", h.Create)
 	})
 
 	r.Route("/signin", func(r chi.Router) {
-		h := signin.New(sess, re, repoUser)
+		h := BuildSigninController(db, cfg.Render, cfg.Session)
 		r.Get("/", h.Form)
 		r.Post("/", h.Verify)
 	})

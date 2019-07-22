@@ -1,0 +1,40 @@
+//+build wireinject
+
+package route
+
+import (
+	"github.com/google/wire"
+	"golang-odai/adapter/http/controller/index"
+	"golang-odai/adapter/http/controller/signin"
+	"golang-odai/adapter/http/controller/signup"
+	"golang-odai/adapter/http/render"
+	"golang-odai/adapter/http/session"
+	"golang-odai/external/mysql"
+	"golang-odai/adapter/http/controller/post"
+	"net/http"
+)
+
+func BuildIndexController(db *mysql.DB, r *render.Config, s *session.Config) *index.Index {
+	wire.Build(SuperSet, ControllerSet)
+	return nil
+}
+
+func BuildPostController(db *mysql.DB, r *render.Config, s *session.Config) *post.Post {
+	wire.Build(SuperSet, ControllerSet)
+	return nil
+}
+
+func BuildSignupController(db *mysql.DB, r *render.Config, s *session.Config) *signup.Signup {
+	wire.Build(SuperSet, ControllerSet)
+	return nil
+}
+
+func BuildSigninController(db *mysql.DB, r *render.Config, s *session.Config) *signin.Sign {
+	wire.Build(SuperSet, ControllerSet)
+	return nil
+}
+
+func BuildAuthenticationMiddleware(s *session.Config) func(http.Handler) http.Handler {
+	wire.Build(SuperSet, MiddlewareSet)
+	return nil
+}
