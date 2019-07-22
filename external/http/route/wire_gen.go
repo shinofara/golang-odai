@@ -13,9 +13,11 @@ import (
 	"golang-odai/adapter/http/middleware"
 	"golang-odai/adapter/http/render"
 	"golang-odai/adapter/http/session"
+	"golang-odai/adapter/repository/mysql/authentication"
 	"golang-odai/adapter/repository/mysql/post"
 	"golang-odai/adapter/repository/mysql/user"
 	"golang-odai/external/mysql"
+	authentication2 "golang-odai/usecase/interactor/authentication"
 	post3 "golang-odai/usecase/interactor/post"
 	"golang-odai/usecase/interactor/timeline"
 	"net/http"
@@ -45,7 +47,9 @@ func BuildPostController(db *mysql.DB, r *render.Config, s *session.Config) *pos
 func BuildSignupController(db *mysql.DB, r *render.Config, s *session.Config) *signup.Signup {
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
-	signupSignup := signup.New(renderRender, repositoryUser)
+	repositoryAuthentication := authentication.New(db)
+	authenticationAuthentication := authentication2.New(repositoryUser, repositoryAuthentication)
+	signupSignup := signup.New(renderRender, repositoryUser, authenticationAuthentication)
 	return signupSignup
 }
 
@@ -53,7 +57,9 @@ func BuildSigninController(db *mysql.DB, r *render.Config, s *session.Config) *s
 	sessionSession := session.New(s)
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
-	sign := signin.New(sessionSession, renderRender, repositoryUser)
+	repositoryAuthentication := authentication.New(db)
+	authenticationAuthentication := authentication2.New(repositoryUser, repositoryAuthentication)
+	sign := signin.New(sessionSession, renderRender, authenticationAuthentication)
 	return sign
 }
 

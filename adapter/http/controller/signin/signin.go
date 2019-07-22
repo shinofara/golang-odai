@@ -3,7 +3,7 @@ package signin
 import (
 	signin2 "golang-odai/adapter/http/render/signin"
 	"golang-odai/adapter/http/session"
-	"golang-odai/usecase/repository"
+	"golang-odai/usecase/interactor/authentication"
 	"net/http"
 
 	"github.com/unrolled/render"
@@ -11,15 +11,15 @@ import (
 
 type Sign struct {
 	re       *signin2.Render
-	repoUser repository.User
 	sess     *session.Session
+	useAuth authentication.Authentication
 }
 
-func New(sess *session.Session, re *render.Render, u repository.User) *Sign {
+func New(sess *session.Session, re *render.Render, useAuth authentication.Authentication) *Sign {
 	return &Sign{
 		re:       signin2.New(re),
-		repoUser: u,
 		sess:     sess,
+		useAuth: useAuth,
 	}
 }
 
@@ -35,7 +35,7 @@ func (hs *Sign) Verify(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	u, err := hs.repoUser.FindByEmailAndPassword(r.Context(), email, password)
+	u, err := hs.useAuth.Verify(r.Context(), email, password)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

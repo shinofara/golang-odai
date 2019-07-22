@@ -15,22 +15,22 @@ import (
 )
 
 func BuildIndexController(db *mysql.DB, r *render.Config, s *session.Config) *index.Index {
-	wire.Build(SuperSet, ControllerSet)
+	wire.Build(SuperSet, DomainSet, ControllerSet)
 	return nil
 }
 
 func BuildPostController(db *mysql.DB, r *render.Config, s *session.Config) *post.Post {
-	wire.Build(SuperSet, ControllerSet)
+	wire.Build(SuperSet, DomainSet, UsecaseSet, ControllerSet)
 	return nil
 }
 
 func BuildSignupController(db *mysql.DB, r *render.Config, s *session.Config) *signup.Signup {
-	wire.Build(SuperSet, ControllerSet)
+	wire.Build(SuperSet, DomainSet, UsecaseSet, ControllerSet)
 	return nil
 }
 
 func BuildSigninController(db *mysql.DB, r *render.Config, s *session.Config) *signin.Sign {
-	wire.Build(SuperSet, ControllerSet)
+	wire.Build(SuperSet, DomainSet, UsecaseSet, ControllerSet)
 	return nil
 }
 
