@@ -1,7 +1,6 @@
 package signup
 
 import (
-	"golang-odai/domain"
 	"net/http"
 )
 
@@ -10,13 +9,8 @@ func (s *Signup) Create(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	u := &domain.User{
-		Name:     name,
-		Email:    email,
-		Password: password,
-	}
 
-	if err := s.repoUser.Create(r.Context(), u); err != nil {
+	if err := s.useAuth.Register(r.Context(), name, email, password); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 

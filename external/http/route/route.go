@@ -11,21 +11,31 @@ import (
 	"golang-odai/adapter/http/session"
 	infraPost "golang-odai/adapter/repository/mysql/post"
 	infraUser "golang-odai/adapter/repository/mysql/user"
+	infraAuth "golang-odai/adapter/repository/mysql/authentication"
 	"golang-odai/config"
 	"golang-odai/external/mysql"
 	usePost "golang-odai/usecase/interactor/post"
+	useAuth "golang-odai/usecase/interactor/authentication"
 	"golang-odai/usecase/interactor/timeline"
 
 	"github.com/go-chi/chi"
 )
 
 var SuperSet = wire.NewSet(
-	infraUser.New,
-	infraPost.New,
-	timeline.New,
-	usePost.New,
 	session.New,
 	render.New,
+	)
+
+var DomainSet = wire.NewSet(
+	infraUser.New,
+	infraPost.New,
+	infraAuth.New,
+	timeline.New,
+	)
+
+var UsecaseSet = wire.NewSet(
+	usePost.New,
+	useAuth.New,
 	)
 
 var ControllerSet = wire.NewSet(
