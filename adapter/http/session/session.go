@@ -16,8 +16,8 @@ type Session struct {
 }
 
 type Config struct {
-	Domain string
-	Secret string
+	Domain string `yaml:"domain"`
+	Secret string `yaml:"secret"`
 }
 
 func init() {

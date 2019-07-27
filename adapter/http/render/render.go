@@ -5,7 +5,7 @@ import (
 )
 
 type Config struct {
-	IsDevelopment bool
+	IsDevelopment bool `yaml:"is_development"`
 }
 
 var defaultCfg = &Config{

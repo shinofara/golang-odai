@@ -4,10 +4,7 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"go.opencensus.io/plugin/ochttp"
-	"golang-odai/adapter/http/render"
-	"golang-odai/adapter/http/session"
 	"golang-odai/config"
-	"golang-odai/external/firebase"
 	"golang-odai/external/http/route"
 	"log"
 	"net/http"
@@ -19,36 +16,24 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"contrib.go.opencensus.io/exporter/jaeger"
 	"go.opencensus.io/trace"
+	"github.com/jinzhu/configor"
 
 )
 
 func main() {
-	cfg := &config.Config{
-		Domain: "localhost",
-		Session: &session.Config{
-			Domain: "localhost",
-			Secret: "xxxxx",
-		},
-		Render: &render.Config{
-			IsDevelopment: true,
-		},
-		Firebase: &firebase.Config{
-			ApiKEY: os.Getenv("FIREBASE_API_KEY"),
-		},
-		Jaeger: &jaeger.Options{
-			AgentEndpoint:     "trace:6831",
-			CollectorEndpoint: "http://trace:14268/api/traces",
-			ServiceName:       "golang-odai",
-		},
+	cfg := config.Config{}
+	err := configor.Load(&cfg, "./environment/config.yml")
+	if err != nil {
+		panic(err)
 	}
 
-	r, err := route.New(cfg)
+	r, err := route.New(&cfg)
 	if err != nil {
 		panic(err)
 	}
 
 	// add tracer
-	if err := tracer(cfg); err != nil {
+	if err := tracer(&cfg); err != nil {
 		panic(err)
 	}
 
@@ -92,7 +77,12 @@ func main() {
 }
 
 func tracer(cfg *config.Config) error {
-	ex, err := jaeger.NewExporter(*cfg.Jaeger)
+	ex, err := jaeger.NewExporter(jaeger.Options{
+		Endpoint: "",
+		AgentEndpoint: cfg.Jaeger.AgentEndpoint,
+		CollectorEndpoint: cfg.Jaeger.CollectorEndpoint,
+		ServiceName: cfg.Jaeger.ServiceName,
+	})
 	if err != nil {
 		return errors.Wrap(err, "failed to create the Jaeger exporter")
 	}

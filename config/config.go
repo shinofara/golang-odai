@@ -1,16 +1,21 @@
 package config
 
 import (
-	"contrib.go.opencensus.io/exporter/jaeger"
 	"golang-odai/adapter/http/render"
 	"golang-odai/adapter/http/session"
 	"golang-odai/external/firebase"
 )
 
 type Config struct {
-	Domain  string
-	Session *session.Config
-	Render  *render.Config
-	Firebase *firebase.Config
-	Jaeger *jaeger.Options
+	Domain  string `required:"true"`
+	Session *session.Config `required:"true"`
+	Render  *render.Config `required:"true"`
+	Firebase *firebase.Config `required:"true"`
+	Jaeger *Jaeger
+}
+
+type Jaeger struct {
+	CollectorEndpoint string `yaml:"collector_endpoint"`
+	AgentEndpoint string `yaml:"trace:6831"`
+	ServiceName string `yaml:"service_name"`
 }
