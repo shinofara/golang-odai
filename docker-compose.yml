@@ -11,6 +11,8 @@ services:
     working_dir: /go/src/golang-odai
     depends_on:
       - db
+    env_file:
+      - ./secret.env
 
   db:
     image: mysql:5.7

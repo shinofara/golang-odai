@@ -5,6 +5,7 @@ import (
 	"golang-odai/adapter/http/render"
 	"golang-odai/adapter/http/session"
 	"golang-odai/config"
+	"golang-odai/external/firebase"
 	"golang-odai/external/http/route"
 	"log"
 	"net/http"
@@ -25,6 +26,9 @@ func main() {
 		},
 		Render: &render.Config{
 			IsDevelopment: true,
+		},
+		Firebase: &firebase.Config{
+			ApiKEY: os.Getenv("FIREBASE_API_KEY"),
 		},
 	}
 

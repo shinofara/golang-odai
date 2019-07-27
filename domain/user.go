@@ -3,5 +3,5 @@ package domain
 type User struct {
 	ID       uint32
 	Name     string
-	AuthenticationID uint32
+	AuthenticationID string
 }

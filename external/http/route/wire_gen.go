@@ -13,9 +13,10 @@ import (
 	"golang-odai/adapter/http/middleware"
 	"golang-odai/adapter/http/render"
 	"golang-odai/adapter/http/session"
-	"golang-odai/adapter/repository/mysql/authentication"
+	"golang-odai/adapter/repository/firebase/authentication"
 	"golang-odai/adapter/repository/mysql/post"
 	"golang-odai/adapter/repository/mysql/user"
+	"golang-odai/external/firebase"
 	"golang-odai/external/mysql"
 	authentication2 "golang-odai/usecase/interactor/authentication"
 	post3 "golang-odai/usecase/interactor/post"
@@ -25,7 +26,7 @@ import (
 
 // Injectors from wire.go:
 
-func BuildIndexController(db *mysql.DB, r *render.Config, s *session.Config) *index.Index {
+func BuildIndexController(db *mysql.DB, fb *firebase.Firebase, r *render.Config, s *session.Config) *index.Index {
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
 	repositoryPost := post.New(db, repositoryUser)
@@ -34,7 +35,7 @@ func BuildIndexController(db *mysql.DB, r *render.Config, s *session.Config) *in
 	return indexIndex
 }
 
-func BuildPostController(db *mysql.DB, r *render.Config, s *session.Config) *post2.Post {
+func BuildPostController(db *mysql.DB, fb *firebase.Firebase, r *render.Config, s *session.Config) *post2.Post {
 	sessionSession := session.New(s)
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
@@ -44,26 +45,26 @@ func BuildPostController(db *mysql.DB, r *render.Config, s *session.Config) *pos
 	return post4
 }
 
-func BuildSignupController(db *mysql.DB, r *render.Config, s *session.Config) *signup.Signup {
+func BuildSignupController(db *mysql.DB, fb *firebase.Firebase, r *render.Config, s *session.Config) *signup.Signup {
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
-	repositoryAuthentication := authentication.New(db)
+	repositoryAuthentication := authentication.New(fb)
 	authenticationAuthentication := authentication2.New(repositoryUser, repositoryAuthentication)
 	signupSignup := signup.New(renderRender, repositoryUser, authenticationAuthentication)
 	return signupSignup
 }
 
-func BuildSigninController(db *mysql.DB, r *render.Config, s *session.Config) *signin.Sign {
+func BuildSigninController(db *mysql.DB, fb *firebase.Firebase, r *render.Config, s *session.Config) *signin.Sign {
 	sessionSession := session.New(s)
 	renderRender := render.New(r)
 	repositoryUser := user.New(db)
-	repositoryAuthentication := authentication.New(db)
+	repositoryAuthentication := authentication.New(fb)
 	authenticationAuthentication := authentication2.New(repositoryUser, repositoryAuthentication)
 	sign := signin.New(sessionSession, renderRender, authenticationAuthentication)
 	return sign
 }
 
-func BuildAuthenticationMiddleware(s *session.Config) func(http.Handler) http.Handler {
+func BuildAuthenticationMiddleware(fb *firebase.Firebase, s *session.Config) func(http.Handler) http.Handler {
 	sessionSession := session.New(s)
 	v := middleware.AuthenticationMiddleware(sessionSession)
 	return v

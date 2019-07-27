@@ -29,7 +29,7 @@ func (i *UserImpl) FindByIDs(_ context.Context, id ...uint32) ([]domain.User, er
 	return us, nil
 }
 
-func (i *UserImpl) FindByAuthenticationID(_ context.Context, authID uint32) (*domain.User, error) {
+func (i *UserImpl) FindByAuthenticationID(_ context.Context, authID string) (*domain.User, error) {
 	u := domain.User{}
 	if err := i.db.Open().Where("authentication_id = ?", authID).First(&u).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {

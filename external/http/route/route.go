@@ -11,9 +11,10 @@ import (
 	"golang-odai/adapter/http/session"
 	infraPost "golang-odai/adapter/repository/mysql/post"
 	infraUser "golang-odai/adapter/repository/mysql/user"
-	infraAuth "golang-odai/adapter/repository/mysql/authentication"
+	infraAuth "golang-odai/adapter/repository/firebase/authentication"
 	"golang-odai/config"
 	"golang-odai/external/mysql"
+	"golang-odai/external/firebase"
 	usePost "golang-odai/usecase/interactor/post"
 	useAuth "golang-odai/usecase/interactor/authentication"
 	"golang-odai/usecase/interactor/timeline"
@@ -56,29 +57,31 @@ func New(cfg *config.Config) (*chi.Mux, error) {
 		return nil, err
 	}
 
+	fb := firebase.New(cfg.Firebase.ApiKEY)
 	r.Route("/", func(r chi.Router) {
-		h := BuildIndexController(db, cfg.Render, cfg.Session)
+		h := BuildIndexController(db, fb, cfg.Render, cfg.Session)
 		r.Get("/", h.Index)
 	})
 
 	r.Route("/posts", func(r chi.Router) {
-		r.Use(BuildAuthenticationMiddleware(cfg.Session))
+		r.Use(BuildAuthenticationMiddleware(fb, cfg.Session))
 
-		h := BuildPostController(db, cfg.Render, cfg.Session)
+		h := BuildPostController(db, fb, cfg.Render, cfg.Session)
 		r.Get("/", h.Index)
 		r.Get("/{id}", h.Detail)
 		r.Get("/form", h.Form)
 		r.Post("/create", h.Create)
 	})
 
+
 	r.Route("/signup", func(r chi.Router) {
-		h := BuildSignupController(db, cfg.Render, cfg.Session)
+		h := BuildSignupController(db, fb, cfg.Render, cfg.Session)
 		r.Get("/", h.Form)
 		r.Post("/", h.Create)
 	})
 
 	r.Route("/signin", func(r chi.Router) {
-		h := BuildSigninController(db, cfg.Render, cfg.Session)
+		h := BuildSigninController(db, fb, cfg.Render, cfg.Session)
 		r.Get("/", h.Form)
 		r.Post("/", h.Verify)
 	})

@@ -1,7 +1,7 @@
 package domain
 
 type Authentication struct {
-	ID       uint32
+	ID       string
 	Email    string
 	Password string
 }
