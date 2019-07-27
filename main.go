@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"go.opencensus.io/plugin/ochttp"
 	"golang-odai/adapter/http/render"
 	"golang-odai/adapter/http/session"
 	"golang-odai/config"
@@ -15,6 +17,9 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"contrib.go.opencensus.io/exporter/jaeger"
+	"go.opencensus.io/trace"
+
 )
 
 func main() {
@@ -30,6 +35,11 @@ func main() {
 		Firebase: &firebase.Config{
 			ApiKEY: os.Getenv("FIREBASE_API_KEY"),
 		},
+		Jaeger: &jaeger.Options{
+			AgentEndpoint:     "trace:6831",
+			CollectorEndpoint: "http://trace:14268/api/traces",
+			ServiceName:       "golang-odai",
+		},
 	}
 
 	r, err := route.New(cfg)
@@ -37,9 +47,25 @@ func main() {
 		panic(err)
 	}
 
+	// add tracer
+	if err := tracer(cfg); err != nil {
+		panic(err)
+	}
+
+	och := &ochttp.Handler{
+		Handler: r,
+		GetStartOptions: func(r *http.Request) trace.StartOptions {
+			startOptions := trace.StartOptions{}
+			if r.URL.Path == "/healthcheck" {
+				startOptions.Sampler = trace.NeverSample()
+			}
+			return startOptions
+		},
+	}
+
 	srv := &http.Server{
 		Addr:    ":80",
-		Handler: r,
+		Handler: och,
 	}
 
 	// Graceful Shutdown
@@ -63,4 +89,15 @@ func main() {
 		log.Println("Failed to gracefully shutdown:", err)
 	}
 	log.Println("Server shutdown")
+}
+
+func tracer(cfg *config.Config) error {
+	ex, err := jaeger.NewExporter(*cfg.Jaeger)
+	if err != nil {
+		return errors.Wrap(err, "failed to create the Jaeger exporter")
+	}
+	trace.RegisterExporter(ex)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+
+	return nil
 }

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.opencensus.io/plugin/ochttp"
 	"io"
 	"net/http"
 	"strings"
@@ -47,7 +48,9 @@ func (f *Firebase) Post(ctx context.Context, service string, data interface{}, r
 
 	r.Header.Set("Content-Type", "application/json")
 
-	res, err := http.DefaultClient.Do(r.WithContext(ctx))
+
+	client := &http.Client{Transport: &ochttp.Transport{}}
+	res, err := client.Do(r.WithContext(ctx))
 	if err != nil {
 		return err
 	}
