@@ -21,3 +21,8 @@ schema:
     - .git
     - .realize
     - vendor
+    scripts:
+    - type: before
+      command: wire ./...
+      global: true
+      output: true
