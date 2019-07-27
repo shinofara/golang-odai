@@ -5,7 +5,7 @@ services:
     build:
       context: .
     ports:
-      - 18888:80
+      - 127.0.0.1:18888:80
     volumes:
       - .:/go/src/golang-odai
     working_dir: /go/src/golang-odai
@@ -19,7 +19,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     ports:
-      - 43306:3306
+      - 127.0.0.1:43306:3306
     hostname: db
 
   init:
@@ -31,3 +31,9 @@ services:
       - db
     command:
       - ./init.sh
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: trace
+    ports:
+      - 127.0.0.1:16686:16686
