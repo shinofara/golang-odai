@@ -12,4 +12,6 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprint(w, "Hello Example")
+	fmt.Fprintf(w, "%+V", 123)
+
 }
